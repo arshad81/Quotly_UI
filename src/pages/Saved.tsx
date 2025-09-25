@@ -2,8 +2,6 @@ import { useContext } from "react";
 import { AuthContext } from "../AuthProvider";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { BASE_API_URL } from "../config/api";
-import axios from "axios";
 
 interface Quote {
     _id: string;
