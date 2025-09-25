@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import { BASE_API_URL } from "../config/api";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    const res = await axios.post("https://quotly.onrender.com/api/auth/login", {
+    const res = await axios.post(`${BASE_API_URL}/auth/login`, {
       username,
       password,
     });

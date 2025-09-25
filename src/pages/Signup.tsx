@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import {  useNavigate } from "react-router-dom";
+import { BASE_API_URL } from "../config/api";
 
 export default function Signup() {
     const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ export default function Signup() {
     const handleSignup = async () => {
         console.log("Signing up with", username, password);
         try {
-            const res = await axios.post("https://quotly.onrender.com/api/auth/register", {
+            const res = await axios.post(`${BASE_API_URL}/auth/register`, {
                 username,
                 password,
             });
