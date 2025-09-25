@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { BASE_API_URL } from "../config/api";
+import { AuthContext } from "../AuthProvider";
 
 interface User {
   _id: string;
@@ -12,7 +13,7 @@ interface User {
 
 export default function AdminPageUI() {
   const [allUsers, setAllUsers] = useState([] as User[]);
-
+  const username = useContext(AuthContext).username;
   const deleteUser = async (userId: string) => {
     try {
       console.log("Deleting user:", userId);
@@ -101,30 +102,35 @@ export default function AdminPageUI() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {allUsers.map((user) => (
-                  <tr key={user._id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {user.username}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.role == "admin" ? "Admin" : "User"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex gap-2 justify-end">
-                      <button onClick={() => { deleteUser(user._id) }} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
-                        Delete
-                      </button>
-                      {user.role == "user" ? (
-                        <button onClick={() => { makeAdmin(user._id) }} className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                          Make Admin
-                        </button>)
-                        :
-                        (<button onClick={() => { revokeAdmin(user._id) }} className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
-                          Revoke Admin
+                {allUsers.map((user) => {
+                  if (user.username == username) {
+                    return null;
+                  }
+                  return (
+                    <tr key={user._id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {user.username}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.role == "admin" ? "Admin" : "User"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex gap-2 justify-end">
+                        <button onClick={() => { deleteUser(user._id) }} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                          Delete
                         </button>
-                        )}
-                    </td>
-                  </tr>
-                ))}
+                        {user.role == "user" ? (
+                          <button onClick={() => { makeAdmin(user._id) }} className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                            Make Admin
+                          </button>)
+                          :
+                          (<button onClick={() => { revokeAdmin(user._id) }} className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
+                            Revoke Admin
+                          </button>
+                          )}
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
             {allUsers.length === 0 && (

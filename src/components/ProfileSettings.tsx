@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BASE_API_URL } from "../config/api";
+import { AuthContext } from "../AuthProvider";
 
 const ProfileSettings = () => {
 
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(useContext(AuthContext).username);
     const [password, setPassword] = useState("");
 
     const handleUsernameChange = async () => {
@@ -76,7 +77,7 @@ const ProfileSettings = () => {
             <div>
                 <input
                     type="text"
-                    value={username}
+                    value={username || ""}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder=""
                     className="flex-1 px-4 py-2 border border-gray-300 bg-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"

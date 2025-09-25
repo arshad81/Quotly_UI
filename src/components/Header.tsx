@@ -1,16 +1,9 @@
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../AuthProvider";
 
 export default function Header() {
-    const [username, setUsername] = useState<string | null>(null);
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            const decoded = jwtDecode<any>(token);
-            console.log("Logged in as:", decoded.username);
-            setUsername(decoded.username);
-        }
-    }, []);
+    const username = useContext(AuthContext).username
+    console.log("Header username:", username);
     return (
         <div className="flex justify-between items-center mb-12">
             <h1 className="text-5xl text-center text-black italic fon">
