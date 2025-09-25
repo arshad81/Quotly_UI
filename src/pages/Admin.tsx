@@ -13,6 +13,21 @@ interface User {
 export default function AdminPageUI() {
   const [allUsers, setAllUsers] = useState([] as User[]);
 
+  const deleteUser = async (userId: string) => {
+    try {
+      console.log("Deleting user:", userId);
+      await axios.delete(`${BASE_API_URL}/auth/deleteByAdmin/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      });
+      setAllUsers([]);
+      getAllUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  }
+
   const revokeAdmin = async (userId: string) => {
     try {
       console.log("Revoking admin for user:", userId);
@@ -95,7 +110,7 @@ export default function AdminPageUI() {
                       {user.role == "admin" ? "Admin" : "User"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex gap-2 justify-end">
-                      <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                      <button onClick={() => { deleteUser(user._id) }} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                         Delete
                       </button>
                       {user.role == "user" ? (
