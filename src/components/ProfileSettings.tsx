@@ -96,7 +96,7 @@ const ProfileSettings = () => {
                 <input
                     type="text"
                     value={""}
-                    onChange={(e) => { }}
+                    onChange={(e) => { setPassword(e.target.value); handlePasswordChange(e); }}
                     placeholder=""
                     className="flex-1 px-4 py-2 border border-gray-300 bg-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
